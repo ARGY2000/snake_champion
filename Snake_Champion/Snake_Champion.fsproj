@@ -6,7 +6,18 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Include="Program.fs"/>
+        <Compile Include="Program.fs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Champion\Champion.fsproj" />
+      <ProjectReference Include="..\Displayinator\Displayinator.csproj" />
+      <ProjectReference Include="..\Essentials\Essentials.csproj" />
+      <ProjectReference Include="..\SnakeF\SnakeF.fsproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="OpenTK" Version="4.7.5" />
     </ItemGroup>
 
 </Project>

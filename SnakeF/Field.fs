@@ -11,6 +11,8 @@ type Field (x: int, y: int) as fie=
     // create the base of the field (walls and open)
     do
         fie.LayBase
+        
+    member public _.GetField = field
     
     member private _.BaseLaying row col =
         if row = 0 or col = 0 or row = _height-1 or col = _width-1 then

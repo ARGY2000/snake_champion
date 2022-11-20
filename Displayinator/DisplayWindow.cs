@@ -1,12 +1,14 @@
+using Essentials;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 using OpenTK.Windowing.GraphicsLibraryFramework;
+using OpenTK;
+using Shared;
 
 namespace Displayinator;
 
-using OpenTK;
 
 // Be warned, there is a LOT of stuff here. It might seem complicated, but just take it slow and you'll be fine.
 // OpenGL's initial hurdle is quite large, but once you get past that, things will start making more sense.
@@ -18,11 +20,12 @@ public class DisplayWindow : GameWindow
     // Negative Y coordinates move to the bottom, positive Y move to the top.
     // OpenGL only supports rendering in 3D, so to create a flat triangle, the Z coordinate will be kept as 0.
     private readonly float[] _vertices =
-    {
-        -0.5f, -0.5f, 0.0f, // Bottom-left vertex
-         0.5f, -0.5f, 0.0f, // Bottom-right vertex
-         0.0f,  0.5f, 0.0f  // Top vertex
-    };
+    //{
+    //    -0.5f, -0.5f, 0,
+    //    0f, 0.5f, 0f,
+    //    0.5f, -0.5f, 0
+    //};
+    Shared.LittleHelpers.GetSquareDisplayArray(4, 4).ConvertToFloats();
 
     // These are the handles to OpenGL objects. A handle is an integer representing where the object lives on the
     // graphics card. Consider them sort of like a pointer; we can't do anything with them directly, but we can
@@ -49,10 +52,8 @@ public class DisplayWindow : GameWindow
         base.OnLoad();
 
         // This will be the color of the background after we clear it, in normalized colors.
-        // Normalized colors are mapped on a range of 0.0 to 1.0, with 0.0 representing black, and 1.0 representing
-        // the largest possible value for that channel.
-        // This is a deep green.
-        GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        // Normalized colors are mapped on a range of 0.0 to 1.0
+        GL.ClearColor(0.5f, 0.5f, 0.5f, 1.0f);
 
         // We need to send our vertices over to the graphics card so OpenGL can use them.
         // To do this, we need to create what's called a Vertex Buffer Object (VBO).
@@ -62,10 +63,8 @@ public class DisplayWindow : GameWindow
         // First, we need to create a buffer. This function returns a handle to it, but as of right now, it's empty.
         _vertexBufferObject = GL.GenBuffer();
 
-        // Now, bind the buffer. OpenGL uses one global state, so after calling this,
         // all future calls that modify the VBO will be applied to this buffer until another buffer is bound instead.
         // The first argument is an enum, specifying what type of buffer we're binding. A VBO is an ArrayBuffer.
-        // There are multiple types of buffers, but for now, only the VBO is necessary.
         // The second argument is the handle to our buffer.
         GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
 
@@ -105,7 +104,7 @@ public class DisplayWindow : GameWindow
         //   The stride; this is how many bytes are between the last element of one vertex and the first element of the next. 3 * sizeof(float) in this case.
         //   The offset; this is how many bytes it should skip to find the first element of the first vertex. 0 as of right now.
         // Stride and Offset are just sort of glossed over for now, but when we get into texture coordinates they'll be shown in better detail.
-        GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
+        GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, true, 3 * sizeof(float), 0);
 
         // Enable variable 0 in the shader.
         GL.EnableVertexAttribArray(0);

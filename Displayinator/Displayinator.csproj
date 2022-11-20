@@ -14,5 +14,10 @@
         <None Update="simple.vert" CopyToOutputDirectory="PreserveNewest" />
         <None Update="shadey.frag" CopyToOutputDirectory="PreserveNewest" />
     </ItemGroup>
+    
+    <ItemGroup>
+      <ProjectReference Include="..\Essentials\Essentials.csproj" />
+      <ProjectReference Include="..\Shared\Shared.fsproj" />
+    </ItemGroup>
 
 </Project>

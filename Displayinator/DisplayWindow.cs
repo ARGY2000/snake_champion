@@ -20,12 +20,15 @@ public class DisplayWindow : GameWindow
     // Negative Y coordinates move to the bottom, positive Y move to the top.
     // OpenGL only supports rendering in 3D, so to create a flat triangle, the Z coordinate will be kept as 0.
     private readonly float[] _vertices =
-    //{
-    //    -0.5f, -0.5f, 0,
-    //    0f, 0.5f, 0f,
-    //    0.5f, -0.5f, 0
-    //};
-    Shared.LittleHelpers.GetSquareDisplayArray(4, 4).ConvertToFloats();
+    {
+        -0.5f, 0.5f, 0,
+        0.5f, 0.5f, 0f,
+        -0.5f, -0.5f, 0,
+        0.5f, 0.5f, 0f,
+        -0.5f, -0.5f, 0,
+        0.5f, -0.5f, 0
+    };
+    //Shared.LittleHelpers.GetSquareDisplayArray(2, 2).ConvertToFloats();
 
     // These are the handles to OpenGL objects. A handle is an integer representing where the object lives on the
     // graphics card. Consider them sort of like a pointer; we can't do anything with them directly, but we can
@@ -36,22 +39,18 @@ public class DisplayWindow : GameWindow
 
     private int _vertexArrayObject;
 
-    // This class is a wrapper around a shader, which helps us manage it.
-    // The shader class's code is in the Common project.
-    // What shaders are and what they're used for will be explained later in this tutorial.
+
     private Shader _shader;
 
     public DisplayWindow(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings)
         : base(gameWindowSettings, nativeWindowSettings)
     {
     }
-
-    // Now, we start initializing OpenGL.
+    
     protected override void OnLoad()
     {
         base.OnLoad();
 
-        // This will be the color of the background after we clear it, in normalized colors.
         // Normalized colors are mapped on a range of 0.0 to 1.0
         GL.ClearColor(0.5f, 0.5f, 0.5f, 1.0f);
 
@@ -120,8 +119,6 @@ public class DisplayWindow : GameWindow
         // Now, enable the shader.
         // Just like the VBO, this is global, so every function that uses a shader will modify this one until a new one is bound instead.
         _shader.Use();
-
-        // Setup is now complete! Now we move to the OnRenderFrame function to finally draw the triangle.
     }
 
     // Now that initialization is done, let's create our render loop.
@@ -154,7 +151,7 @@ public class DisplayWindow : GameWindow
         //     is some variant of a triangle. Since we just want a single triangle, we use Triangles.
         //   Starting index; this is just the start of the data you want to draw. 0 here.
         //   How many vertices you want to draw. 3 for a triangle.
-        GL.DrawArrays(PrimitiveType.Triangles, 0, 3);
+        GL.DrawArrays(PrimitiveType.Triangles, 0, (_vertices.Length/3));
 
         // OpenTK windows are what's known as "double-buffered". In essence, the window manages two buffers.
         // One is rendered to while the other is currently displayed by the window.

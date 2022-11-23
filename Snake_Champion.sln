@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Displayinator", "Displayina
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Shared", "Shared\Shared.fsproj", "{5BEB4F2A-9187-4D6E-A25C-B1CF5306C6F3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DisplayObjects", "DisplayObjects\DisplayObjects.csproj", "{76068969-0482-407F-9E22-1ADC5D381CAF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,5 +50,9 @@ Global
 		{5BEB4F2A-9187-4D6E-A25C-B1CF5306C6F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5BEB4F2A-9187-4D6E-A25C-B1CF5306C6F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5BEB4F2A-9187-4D6E-A25C-B1CF5306C6F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76068969-0482-407F-9E22-1ADC5D381CAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76068969-0482-407F-9E22-1ADC5D381CAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76068969-0482-407F-9E22-1ADC5D381CAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76068969-0482-407F-9E22-1ADC5D381CAF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

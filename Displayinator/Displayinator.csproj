@@ -13,6 +13,9 @@
     <ItemGroup>
         <None Update="simple.vert" CopyToOutputDirectory="PreserveNewest" />
         <None Update="shadey.frag" CopyToOutputDirectory="PreserveNewest" />
+        <None Update="line.vert">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
     
     <ItemGroup>

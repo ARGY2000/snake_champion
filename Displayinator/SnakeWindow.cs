@@ -23,10 +23,14 @@ public class SnakeWindow : GameWindow
 
         _vertices = new[]
         {
-            -0.8f, 0.8f, 0,
-            0.8f, 0.8f, 0,
-            -0.8f, -0.8f, 0,
-            0.8f, -0.8f, 0
+            -0.8f, 0.8f, 0, // top left         0
+            0.8f, 0.8f, 0, // top right         1
+            -0.8f, -0.8f, 0, // bottom left     2
+            0.8f, -0.8f, 0, // bottom right     3
+            0, 0.8f, 0, // top center           4
+            -0.8f, 0, 0, // left center         5
+            0, -0.8f, 0, // bottom center       6
+            0.8f, 0, 0, // right center         7
         };
 
         _indices = new[]
@@ -37,10 +41,16 @@ public class SnakeWindow : GameWindow
 
         _lineIndices = new[]
         {
-            0u, 1u,
-            0u, 2u,
-            1u, 3u,
-            2u, 3u
+            0u, 4u, // top left to center
+            4u, 1u, // top right to center
+            0u, 5u, // top left to left center
+            5u, 2u, // left center to bottom left
+            2u, 6u, // bottom eft to bottom center
+            6u, 3u, // bottom center to bottom right
+            1u, 7u,
+            7u, 3u,
+            4u, 6u, // top center to bottom center
+            5u, 7u,
         };
 
 #endif
@@ -64,6 +74,7 @@ public class SnakeWindow : GameWindow
 
 
     private Shader _shader;
+    private Shader _lineShader;
 
     // runs once on loading
     protected override void OnLoad()
@@ -89,8 +100,30 @@ public class SnakeWindow : GameWindow
         GL.BufferData(BufferTarget.ElementArrayBuffer, _indices.Length * sizeof(uint), _indices, BufferUsageHint.StaticDraw);
         
         
+        // lines
+        _lineVertexBufferObject = GL.GenBuffer();
+        GL.BindBuffer(BufferTarget.ArrayBuffer, _lineVertexBufferObject);
+        GL.BufferData(BufferTarget.ArrayBuffer, _vertices.Length * sizeof(float), _vertices, BufferUsageHint.StaticDraw);
+
+        _lineVertexArrayObject = GL.GenVertexArray();
+        GL.BindVertexArray(_lineVertexArrayObject);
+        
+        GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, true, 3 * sizeof(float), 0);
+        
+        GL.EnableVertexAttribArray(0);
+        
+        _lineElementBufferObject = GL.GenBuffer();
+        GL.BindBuffer(BufferTarget.ElementArrayBuffer, _lineElementBufferObject);
+        GL.BufferData(BufferTarget.ElementArrayBuffer, _lineIndices.Length * sizeof(uint), _lineIndices, BufferUsageHint.StaticDraw);
+        
+        
+        // set the maximum line width
+        float[] linewidths = new [] {0f, 0f};
+        GL.GetFloat(GetPName.LineWidth, linewidths);
+        GL.LineWidth(linewidths[0]);
         
         _shader = new Shader("simple.vert", "shadey.frag");
+        _lineShader = new Shader("line.vert", "shadey.frag");
         _shader.Use();
     }
 
@@ -109,6 +142,13 @@ public class SnakeWindow : GameWindow
         
         //GL.DrawArrays(PrimitiveType.Triangles, 0, (_vertices.Length/3));
         GL.DrawElements(PrimitiveType.Triangles, _indices.Length, DrawElementsType.UnsignedInt, 0);
+        
+        _lineShader.Use();
+        
+        // Bind the VAO
+        GL.BindVertexArray(_lineVertexArrayObject);
+        
+        GL.DrawElements(PrimitiveType.Lines, _lineIndices.Length, DrawElementsType.UnsignedInt, 0);
         
         SwapBuffers();
     }

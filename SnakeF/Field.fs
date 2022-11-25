@@ -20,7 +20,7 @@ type Field (x: int, y: int) as fie =
     member public _.GetFloors = _snakeBoard.GetFloors
     
     member private _.BaseLaying row col =
-        if row = 0 or col = 0 or row = _height-1 or col = _width-1 then
+        if row = 0 || col = 0 || row = _height-1 || col = _width-1 then
             MapBlocks.Wall
         else
             MapBlocks.Open

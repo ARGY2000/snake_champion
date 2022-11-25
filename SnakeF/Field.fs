@@ -12,12 +12,17 @@ type Field (x: int, y: int) as fie =
     // create the base of the field (walls and open)
     do
         fie.LayBase
+        fie.LayApple
+        fie.PlaceSnake
         _snakeBoard.SetNewBoard fie.FieldArray
         
     member public _.GetField = _field
     member public _.GetBoard = _snakeBoard
     member public _.GetWalls = _snakeBoard.GetWalls
     member public _.GetFloors = _snakeBoard.GetFloors
+    member public _.GetSnake = _snakeBoard.GetSnake
+    member public _.GetHead = _snakeBoard.GetHead
+    member public _.GetApple = _snakeBoard.GetApple
     
     member private _.BaseLaying row col =
         if row = 0 || col = 0 || row = _height-1 || col = _width-1 then
@@ -39,7 +44,7 @@ type Field (x: int, y: int) as fie =
         let mutable x: int = 0
         let mutable y: int = 0
         
-        while _field[x,y] = MapBlocks.Wall or _field[x,y] = MapBlocks.Apple do
+        while _field[x,y] = MapBlocks.Wall || _field[x,y] = MapBlocks.Apple do
             x <- ran.Next(1, _width-2)
             y <- ran.Next(1, _height-2)
             

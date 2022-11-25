@@ -14,7 +14,10 @@ let verts = boardy.GetBaseVertices
 let lineys = boardy.GetLineArray
 let wallys = boardy.GetWalls
 let floors = boardy.GetFloors
+let body = boardy.GetSnake
+let head = boardy.GetHead
+let apple = boardy.GetApple
 
-let dis = new Displayinator.SnakeWindow(GameWindowSettings.Default, nativset, verts, lineys, wallys, floors)
+let dis = new Displayinator.SnakeWindow(GameWindowSettings.Default, nativset, verts, lineys, wallys, floors, body, head, apple)
 
 dis.Run()

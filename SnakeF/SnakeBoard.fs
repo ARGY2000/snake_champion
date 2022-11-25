@@ -78,3 +78,21 @@ type SnakeBoard (width: float, height: float) as SB =
         for i in _blocks.Where(fun b -> b.Style = MapBlocks.Open) do
             walls <- Seq.append walls i.GetElementArray
         Seq.toArray walls
+        
+    member public _.GetSnake =
+        let mutable walls: seq<uint> = Seq.empty
+        for i in _blocks.Where(fun b -> b.Style = MapBlocks.Body) do
+            walls <- Seq.append walls i.GetElementArray
+        Seq.toArray walls
+        
+    member public _.GetHead =
+        let mutable walls: seq<uint> = Seq.empty
+        for i in _blocks.Where(fun b -> b.Style = MapBlocks.Head) do
+            walls <- Seq.append walls i.GetElementArray
+        Seq.toArray walls
+        
+    member public _.GetApple =
+        let mutable walls: seq<uint> = Seq.empty
+        for i in _blocks.Where(fun b -> b.Style = MapBlocks.Apple) do
+            walls <- Seq.append walls i.GetElementArray
+        Seq.toArray walls

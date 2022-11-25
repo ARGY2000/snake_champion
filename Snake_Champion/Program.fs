@@ -12,7 +12,9 @@ let fieldy = new Field(20,20)
 let boardy = fieldy.GetBoard
 let verts = boardy.GetBaseVertices
 let lineys = boardy.GetLineArray
+let wallys = boardy.GetWalls
+let floors = boardy.GetFloors
 
-let dis = new Displayinator.SnakeWindow(GameWindowSettings.Default, nativset, verts, lineys)
+let dis = new Displayinator.SnakeWindow(GameWindowSettings.Default, nativset, verts, lineys, wallys, floors)
 
 dis.Run()

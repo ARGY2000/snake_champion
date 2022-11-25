@@ -1,4 +1,4 @@
-#define Testing
+//#define Testing
 
 using Essentials;
 using OpenTK.Graphics.OpenGL;
@@ -17,7 +17,9 @@ public class SnakeWindow : GameWindow
     private uint[] _indices { get; set; }
     private uint[] _lineIndices { get; set; }
     
-    public SnakeWindow(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings) : base(gameWindowSettings, nativeWindowSettings)
+    public SnakeWindow(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings,
+        double[] verts, uint[] points) 
+        : base(gameWindowSettings, nativeWindowSettings)
     {
         #if Testing
 
@@ -53,8 +55,11 @@ public class SnakeWindow : GameWindow
             5u, 7u,
         };
 
-#endif
+        #endif
 
+        _vertices = verts.ConvertToFloats();
+        _lineIndices = points;
+        _indices = Array.Empty<uint>();
     }
     
     // squares
@@ -135,13 +140,13 @@ public class SnakeWindow : GameWindow
         GL.Clear(ClearBufferMask.ColorBufferBit);
         
         // Bind the shader
-        _shader.Use();
+        //_shader.Use();
 
         // Bind the VAO
-        GL.BindVertexArray(_vertexArrayObject);
+        //GL.BindVertexArray(_vertexArrayObject);
         
         //GL.DrawArrays(PrimitiveType.Triangles, 0, (_vertices.Length/3));
-        GL.DrawElements(PrimitiveType.Triangles, _indices.Length, DrawElementsType.UnsignedInt, 0);
+        //GL.DrawElements(PrimitiveType.Triangles, _indices.Length, DrawElementsType.UnsignedInt, 0);
         
         _lineShader.Use();
         
@@ -156,6 +161,6 @@ public class SnakeWindow : GameWindow
     protected override void OnResize(ResizeEventArgs e)
     {
         base.OnResize(e);
-        GL.Viewport(0, 0, Size.Y, Size.Y);
+        GL.Viewport(0, 0, Size.X, Size.Y);
     }
 }

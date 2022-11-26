@@ -14,6 +14,7 @@ namespace Displayinator;
 public class SnakeWindow : GameWindow
 {
     private float[] _vertices { get; set; }
+    private float[] _linevertices { get; set; }
     private uint[] _wallIndices { get; set; }
     private uint[] _lineIndices { get; set; }
     private uint[] _floorIndices { get; set; }
@@ -22,10 +23,11 @@ public class SnakeWindow : GameWindow
     private uint[] _appleIndices { get; set; }
     
     public SnakeWindow(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings,
-        double[] layout, uint[] lines, uint[] walls, uint[] floors, uint[] head, uint[] apple) 
+        double[] layout, uint[] lines, uint[] walls, uint[] floors, uint[] head, uint[] apple, double[] lineverts) 
         : base(gameWindowSettings, nativeWindowSettings)
     {
         _vertices = layout.ConvertToFloats();
+        _linevertices = lineverts.ConvertToFloats();
         _lineIndices = lines;
         _wallIndices = walls;
         _floorIndices = floors;
@@ -83,17 +85,17 @@ public class SnakeWindow : GameWindow
         GL.ClearColor(0.7f, 0.7f, 0.7f, 1.0f);
         
         
-        BufferBinding(ref _vertexBufferObject, ref _vertexArrayObject, ref _elementBufferObject, _wallIndices);
+        BufferBinding(ref _vertexBufferObject, ref _vertexArrayObject, ref _elementBufferObject, _wallIndices, BufferUsageHint.StaticDraw);
         
-        BufferBinding(ref _floorVertexBufferObject, ref _floorVertexArrayObject, ref _floorElementBufferObject, _floorIndices);
+        BufferBinding(ref _floorVertexBufferObject, ref _floorVertexArrayObject, ref _floorElementBufferObject, _floorIndices, BufferUsageHint.StaticDraw);
         
-        BufferBinding(ref _snakeVertexBufferObject, ref _snakeVertexArrayObject, ref _snakeElementBufferObject, _snakeIndices);
+        BufferBinding(ref _snakeVertexBufferObject, ref _snakeVertexArrayObject, ref _snakeElementBufferObject, _snakeIndices, BufferUsageHint.DynamicDraw);
         
-        BufferBinding(ref _headVertexBufferObject, ref _headVertexArrayObject, ref _headElementBufferObject, _headIndices);
+        BufferBinding(ref _headVertexBufferObject, ref _headVertexArrayObject, ref _headElementBufferObject, _headIndices, BufferUsageHint.DynamicDraw);
         
-        BufferBinding(ref _appleVertexBufferObject, ref _appleVertexArrayObject, ref _appleElementBufferObject, _appleIndices);
+        BufferBinding(ref _appleVertexBufferObject, ref _appleVertexArrayObject, ref _appleElementBufferObject, _appleIndices, BufferUsageHint.DynamicDraw);
         
-        BufferBinding(ref _lineVertexBufferObject, ref _lineVertexArrayObject, ref _lineElementBufferObject, _lineIndices);
+        BufferBinding(ref _lineVertexBufferObject, ref _lineVertexArrayObject, ref _lineElementBufferObject, _lineIndices, BufferUsageHint.StaticDraw, _linevertices);
 
         
         // set the maximum line width
@@ -110,11 +112,13 @@ public class SnakeWindow : GameWindow
         _wallShader.Use();
     }
 
-    private void BufferBinding(ref int vbo, ref int vao, ref int ebo, uint[] indices)
+    private void BufferBinding(ref int vbo, ref int vao, ref int ebo, uint[] indices, BufferUsageHint buh, float[]? verts = null)
     {
+        if (verts == null) verts = _vertices;
+        
         vbo = GL.GenBuffer();
         GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
-        GL.BufferData(BufferTarget.ArrayBuffer, _vertices.Length * sizeof(float), _vertices, BufferUsageHint.StaticDraw);
+        GL.BufferData(BufferTarget.ArrayBuffer, verts.Length * sizeof(float), verts, buh);
 
         vao = GL.GenVertexArray();
         GL.BindVertexArray(vao);
@@ -125,7 +129,7 @@ public class SnakeWindow : GameWindow
         
         ebo = GL.GenBuffer();
         GL.BindBuffer(BufferTarget.ElementArrayBuffer, ebo);
-        GL.BufferData(BufferTarget.ElementArrayBuffer, indices.Length * sizeof(uint), indices, BufferUsageHint.StaticDraw);
+        GL.BufferData(BufferTarget.ElementArrayBuffer, indices.Length * sizeof(uint), indices, buh);
     }
 
     protected override void OnRenderFrame(FrameEventArgs args)
@@ -138,9 +142,9 @@ public class SnakeWindow : GameWindow
         
         DrawSection(_wallShader, _vertexArrayObject, _wallIndices, PrimitiveType.Triangles);
         DrawSection(_floorShader, _floorVertexArrayObject, _floorIndices, PrimitiveType.Triangles);
+        DrawSection(_appleShader, _appleVertexArrayObject, _appleIndices, PrimitiveType.Triangles);
         DrawSection(_snakeShader, _snakeVertexArrayObject, _snakeIndices, PrimitiveType.Triangles);
         DrawSection(_headShader, _headVertexArrayObject, _headIndices, PrimitiveType.Triangles);
-        DrawSection(_appleShader, _appleVertexArrayObject, _appleIndices, PrimitiveType.Triangles);
         DrawSection(_lineShader, _lineVertexArrayObject, _lineIndices, PrimitiveType.Lines);
 
         
@@ -157,15 +161,24 @@ public class SnakeWindow : GameWindow
         GL.DrawElements(primtyp, indices.Length, DrawElementsType.UnsignedInt, 0);
     }
 
-    //protected override void OnUpdateFrame(FrameEventArgs args)
-    //{
-    //    base.OnUpdateFrame(args);
-    //
-    //    //_headIndices = _field.GetSnake();
-    //    
-    //    GL.BindBuffer(BufferTarget.ElementArrayBuffer, _headElementBufferObject);
-    //    GL.BufferData(BufferTarget.ElementArrayBuffer, _headIndices.Length * sizeof(uint), _headIndices, BufferUsageHint.StaticDraw);
-    //}
+    protected override void OnUpdateFrame(FrameEventArgs args)
+    {
+        base.OnUpdateFrame(args);
+        
+        GL.BindBuffer(BufferTarget.ElementArrayBuffer, _headElementBufferObject);
+        GL.BufferSubData(BufferTarget.ElementArrayBuffer, IntPtr.Zero, _headIndices.Length * sizeof(uint), _headIndices);
+
+        GL.BindBuffer(BufferTarget.ElementArrayBuffer, _lineElementBufferObject);
+        GL.BufferSubData(BufferTarget.ElementArrayBuffer, IntPtr.Zero, _lineIndices.Length*sizeof(uint), _lineIndices);
+    }
+
+    private bool headUpdated { get; set; } = false;
+
+    public void UpdateHeadIndices(uint[] head)
+    {
+        _headIndices = head;
+        headUpdated = true;
+    }
 
 
     public event EventHandler<Keys> KeyInput; 

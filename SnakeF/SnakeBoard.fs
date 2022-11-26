@@ -49,6 +49,12 @@ type SnakeBoard (width: float, height: float) as SB =
             vertices <- Seq.append vertices [i.X; i.Y; i.Z]
         Seq.toArray vertices
         
+    member public _.GetLineVertices() =
+        let mutable vertices: seq<float> = Seq.empty
+        for i in _board do
+            vertices <- Seq.append vertices [i.X; i.Y; 1.0]
+        Seq.toArray vertices
+        
     member public _.GetLineArray() : uint[] =
         let mutable dots: seq<uint> = Seq.empty
         for i in _graph do

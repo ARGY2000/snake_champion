@@ -1,6 +1,7 @@
 namespace SnakeF
 
 open System
+open System.Linq
 open Essentials
 
 type Field (x: int, y: int) as fie =
@@ -39,6 +40,31 @@ type Field (x: int, y: int) as fie =
             y <- ran.Next(1, _height-2)
             
         _field[x,y] <- MapBlocks.Head
+        
+    member public _.MoveHead(direct: Direction) =
+        let mutable row = 0
+        let mutable col = 0
+        let mutable break = false
+        while not break && row < _height do
+            col <- 0
+            while not break && col < _width do
+                if _field[col,row] = MapBlocks.Head then
+                    let destrow =
+                        match direct with
+                        | Direction.Up -> row-1
+                        | Direction.Down -> row+1
+                        | _ -> row
+                    let destcol =
+                        match direct with
+                        | Direction.Left -> col-1
+                        | Direction.Right -> col+1
+                        | _ -> col
+                    if _field[destcol, destrow] <> MapBlocks.Wall && _field[destcol, destrow] <> MapBlocks.Body then
+                        _field[destcol, destrow] <- MapBlocks.Head
+                        _field[col,row] <- MapBlocks.Open
+                    break <- true
+                col <- col+1
+            row <- row+1
         
     member public _.FieldArray() : MapBlocks[] =
         [|

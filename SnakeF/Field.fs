@@ -7,22 +7,12 @@ type Field (x: int, y: int) as fie =
     let _width = x
     let _height = y
     let mutable _field: MapBlocks [,] = Array2D.zeroCreate<MapBlocks> _width _height
-    let _snakeBoard = new SnakeBoard((float)_width, (float)_height)
     
     // create the base of the field (walls and open)
     do
-        fie.LayBase
-        fie.LayApple
-        fie.PlaceSnake
-        _snakeBoard.SetNewBoard fie.FieldArray
+        fie.LayBase()
         
-    member public _.GetField = _field
-    member public _.GetBoard = _snakeBoard
-    member public _.GetWalls = _snakeBoard.GetWalls
-    member public _.GetFloors = _snakeBoard.GetFloors
-    member public _.GetSnake = _snakeBoard.GetSnake
-    member public _.GetHead = _snakeBoard.GetHead
-    member public _.GetApple = _snakeBoard.GetApple
+    member public _.GetField() = _field
     
     member private _.BaseLaying row col =
         if row = 0 || col = 0 || row = _height-1 || col = _width-1 then
@@ -30,16 +20,16 @@ type Field (x: int, y: int) as fie =
         else
             MapBlocks.Open
             
-    member private _.LayBase =
+    member private _.LayBase() =
         _field <- Array2D.init<MapBlocks> _width _height (fie.BaseLaying)
         
-    member public _.LayApple =
+    member public _.LayApple() =
         let ran = new Random()
         let x = ran.Next(1, _width-2)
         let y = ran.Next(1, _height-2)
         _field[x,y] <- MapBlocks.Apple
         
-    member public _.PlaceSnake =
+    member public _.PlaceSnake() =
         let ran = new Random()
         let mutable x: int = 0
         let mutable y: int = 0
@@ -50,7 +40,7 @@ type Field (x: int, y: int) as fie =
             
         _field[x,y] <- MapBlocks.Head
         
-    member public _.FieldArray: MapBlocks[] =
+    member public _.FieldArray() : MapBlocks[] =
         [|
             for i in 0 .. _height-1 do
                 for j in 0 .. _width-1 ->

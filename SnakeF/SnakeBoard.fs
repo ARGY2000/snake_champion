@@ -43,13 +43,13 @@ type SnakeBoard (width: float, height: float) as SB =
                 lines <- Seq.append lines [new Line(i, _board.First(fun b -> b.Col = i.Col && b.Row = i.Row+1))]
         _graph <- Seq.toArray lines
         
-    member public _.GetBaseVertices =
+    member public _.GetBaseVertices() =
         let mutable vertices: seq<float> = Seq.empty
         for i in _board do
             vertices <- Seq.append vertices [i.X; i.Y; i.Z]
         Seq.toArray vertices
         
-    member public _.GetLineArray: uint[] =
+    member public _.GetLineArray() : uint[] =
         let mutable dots: seq<uint> = Seq.empty
         for i in _graph do
             dots <- Seq.append dots [(uint)(i.Orig.Index); (uint)(i.Dest.Index)]
@@ -67,31 +67,31 @@ type SnakeBoard (width: float, height: float) as SB =
                 new Block(tl, tr, bl, br, map[i])
         |]
         
-    member public _.GetWalls =
+    member public _.GetWalls() =
         let mutable walls: seq<uint> = Seq.empty
         for i in _blocks.Where(fun b -> b.Style = MapBlocks.Wall) do
             walls <- Seq.append walls i.GetElementArray
         Seq.toArray walls
         
-    member public _.GetFloors =
+    member public _.GetFloors() =
         let mutable walls: seq<uint> = Seq.empty
         for i in _blocks.Where(fun b -> b.Style = MapBlocks.Open) do
             walls <- Seq.append walls i.GetElementArray
         Seq.toArray walls
         
-    member public _.GetSnake =
+    member public _.GetSnake() =
         let mutable walls: seq<uint> = Seq.empty
         for i in _blocks.Where(fun b -> b.Style = MapBlocks.Body) do
             walls <- Seq.append walls i.GetElementArray
         Seq.toArray walls
         
-    member public _.GetHead =
+    member public _.GetHead() =
         let mutable walls: seq<uint> = Seq.empty
         for i in _blocks.Where(fun b -> b.Style = MapBlocks.Head) do
             walls <- Seq.append walls i.GetElementArray
         Seq.toArray walls
         
-    member public _.GetApple =
+    member public _.GetApple() =
         let mutable walls: seq<uint> = Seq.empty
         for i in _blocks.Where(fun b -> b.Style = MapBlocks.Apple) do
             walls <- Seq.append walls i.GetElementArray

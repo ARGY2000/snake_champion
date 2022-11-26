@@ -12,9 +12,11 @@
         <Compile Include="SnakeBoard.fs" />
         <Compile Include="Field.fs" />
         <Compile Include="Snake.fs" />
+        <Compile Include="SnakeController.fs" />
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Displayinator\Displayinator.csproj" />
       <ProjectReference Include="..\Essentials\Essentials.csproj" />
     </ItemGroup>
 

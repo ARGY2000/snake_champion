@@ -22,16 +22,16 @@ public class SnakeWindow : GameWindow
     private uint[] _appleIndices { get; set; }
     
     public SnakeWindow(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings,
-        double[] verts, uint[] points, uint[] walls, uint[] floors, uint[] snake, uint[] head, uint[] apple) 
+        double[] layout, uint[] lines, uint[] walls, uint[] floors, uint[] head, uint[] apple) 
         : base(gameWindowSettings, nativeWindowSettings)
     {
-        _vertices = verts.ConvertToFloats();
-        _lineIndices = points;
+        _vertices = layout.ConvertToFloats();
+        _lineIndices = lines;
         _wallIndices = walls;
         _floorIndices = floors;
-        _appleIndices = apple;
-        _snakeIndices = snake;
+        _snakeIndices = Array.Empty<uint>();
         _headIndices = head;
+        _appleIndices = apple;
     }
 
     #region BufferStuff
@@ -156,7 +156,25 @@ public class SnakeWindow : GameWindow
         // draw on screen
         GL.DrawElements(primtyp, indices.Length, DrawElementsType.UnsignedInt, 0);
     }
-    
+
+    //protected override void OnUpdateFrame(FrameEventArgs args)
+    //{
+    //    base.OnUpdateFrame(args);
+    //
+    //    //_headIndices = _field.GetSnake();
+    //    
+    //    GL.BindBuffer(BufferTarget.ElementArrayBuffer, _headElementBufferObject);
+    //    GL.BufferData(BufferTarget.ElementArrayBuffer, _headIndices.Length * sizeof(uint), _headIndices, BufferUsageHint.StaticDraw);
+    //}
+
+
+    public event EventHandler<Keys> KeyInput; 
+    protected override void OnKeyDown(KeyboardKeyEventArgs e)
+    {
+        base.OnKeyDown(e);
+        KeyInput.Invoke(this, e.Key);
+    }
+
     protected override void OnResize(ResizeEventArgs e)
     {
         base.OnResize(e);

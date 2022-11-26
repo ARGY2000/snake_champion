@@ -9,5 +9,5 @@ type Snake (x: int, y: int) =
     let mutable _score = 0
     
     do
-        _field.LayApple
+        _field.LayApple()
     

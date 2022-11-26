@@ -57,3 +57,5 @@ type SnakeController (width: int, height: int, visible: bool) as SC =
         if updated then
             _board.SetNewBoard <| _field.FieldArray()
             _display.UpdateHeadIndices(_board.GetHead())
+            _display.UpdateSnakeIndices(_board.GetSnake())
+            _display.UpdateAppleIndices(_board.GetApple())

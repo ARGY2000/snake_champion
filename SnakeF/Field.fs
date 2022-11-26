@@ -60,8 +60,12 @@ type Field (x: int, y: int) as fie =
                         | Direction.Right -> col+1
                         | _ -> col
                     if _field[destcol, destrow] <> MapBlocks.Wall && _field[destcol, destrow] <> MapBlocks.Body then
-                        _field[destcol, destrow] <- MapBlocks.Head
-                        _field[col,row] <- MapBlocks.Open
+                        if _field[destcol, destrow] = MapBlocks.Apple then
+                            _field[destcol, destrow] <- MapBlocks.Head
+                            _field[row,col] <- MapBlocks.Body
+                        else
+                            _field[destcol, destrow] <- MapBlocks.Head
+                            _field[col,row] <- MapBlocks.Open
                     break <- true
                 col <- col+1
             row <- row+1

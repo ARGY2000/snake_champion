@@ -31,7 +31,7 @@ public class SnakeWindow : GameWindow
         _lineIndices = lines;
         _wallIndices = walls;
         _floorIndices = floors;
-        _snakeIndices = Array.Empty<uint>();
+        _snakeIndices = new uint[_wallIndices.Length]; //Array.Empty<uint>();
         _headIndices = head;
         _appleIndices = apple;
     }
@@ -165,21 +165,30 @@ public class SnakeWindow : GameWindow
     {
         base.OnUpdateFrame(args);
         
+        GL.BindBuffer(BufferTarget.ElementArrayBuffer, _snakeElementBufferObject);
+        GL.BufferSubData(BufferTarget.ElementArrayBuffer, IntPtr.Zero, _snakeIndices.Length * sizeof(uint), _snakeIndices);
+        
         GL.BindBuffer(BufferTarget.ElementArrayBuffer, _headElementBufferObject);
         GL.BufferSubData(BufferTarget.ElementArrayBuffer, IntPtr.Zero, _headIndices.Length * sizeof(uint), _headIndices);
 
         GL.BindBuffer(BufferTarget.ElementArrayBuffer, _lineElementBufferObject);
         GL.BufferSubData(BufferTarget.ElementArrayBuffer, IntPtr.Zero, _lineIndices.Length*sizeof(uint), _lineIndices);
     }
-
-    private bool headUpdated { get; set; } = false;
-
+    
     public void UpdateHeadIndices(uint[] head)
     {
         _headIndices = head;
-        headUpdated = true;
     }
 
+    public void UpdateAppleIndices(uint[] apple)
+    {
+        _appleIndices = apple;
+    }
+
+    public void UpdateSnakeIndices(uint[] snake)
+    {
+        _snakeIndices = snake;
+    }
 
     public event EventHandler<Keys> KeyInput; 
     protected override void OnKeyDown(KeyboardKeyEventArgs e)

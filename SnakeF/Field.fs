@@ -26,8 +26,11 @@ type Field (x: int, y: int) as fie =
         
     member public _.LayApple() =
         let ran = new Random()
-        let x = ran.Next(1, _width-2)
-        let y = ran.Next(1, _height-2)
+        let mutable x = 0
+        let mutable y = 0
+        while _field[x,y] <> MapBlocks.Open do
+            x <- ran.Next(1, _width-2)
+            y <- ran.Next(1, _height-2)
         _field[x,y] <- MapBlocks.Apple
         
     member public _.PlaceSnake() =
@@ -35,13 +38,14 @@ type Field (x: int, y: int) as fie =
         let mutable x: int = 0
         let mutable y: int = 0
         
-        while _field[x,y] = MapBlocks.Wall || _field[x,y] = MapBlocks.Apple do
+        while _field[x,y] <> MapBlocks.Open do
             x <- ran.Next(1, _width-2)
             y <- ran.Next(1, _height-2)
             
         _field[x,y] <- MapBlocks.Head
         
     member public _.MoveHead(direct: Direction) =
+        let mutable placing = false
         let mutable row = 0
         let mutable col = 0
         let mutable break = false
@@ -62,13 +66,40 @@ type Field (x: int, y: int) as fie =
                     if _field[destcol, destrow] <> MapBlocks.Wall && _field[destcol, destrow] <> MapBlocks.Body then
                         if _field[destcol, destrow] = MapBlocks.Apple then
                             _field[destcol, destrow] <- MapBlocks.Head
-                            _field[row,col] <- MapBlocks.Body
+                            _field[col,row] <- MapBlocks.Body
+                            placing <- true
                         else
                             _field[destcol, destrow] <- MapBlocks.Head
                             _field[col,row] <- MapBlocks.Open
+                            fie.MoveBody destcol destrow col row
                     break <- true
                 col <- col+1
             row <- row+1
+            
+        if placing then
+            fie.LayApple()
+            
+    member private _.MoveBody (col: int) (row: int) (ncol: int) (nrow: int) =
+        let mutable Spots: seq<int * int> = Seq.empty
+        let rec MoveThatBody (c:int) (r: int) (nc:int) (nr: int) =
+            let ToTheNextOne destC destR =
+                Spots <- Seq.append Spots [(nc, nr)]
+                _field[nc, nr] <- MapBlocks.Body
+                _field[destC,destR] <- MapBlocks.Open
+                MoveThatBody nc nr destC destR
+                
+            let spot = (1, 1)
+                
+            if _field[nc-1,nr] = MapBlocks.Body && not (Spots |> Seq.exists (fun x -> x = ((nc-1),nr))) then
+                ToTheNextOne (nc-1) nr
+            else if _field[nc+1,nr] = MapBlocks.Body && not (Spots |> Seq.exists (fun x -> x = ((nc+1),nr))) then
+                ToTheNextOne (nc+1) nr
+            else if _field[nc,nr-1] = MapBlocks.Body && not (Spots |> Seq.exists (fun x -> x = (nc,(nr-1)))) then
+                ToTheNextOne nc (nr-1)
+            else if _field[nc,nr+1] = MapBlocks.Body && not (Spots |> Seq.exists (fun x -> x = (nc,(nr+1)))) then
+                ToTheNextOne nc (nr+1)
+                
+        MoveThatBody col row ncol nrow
         
     member public _.FieldArray() : MapBlocks[] =
         [|

@@ -170,6 +170,9 @@ public class SnakeWindow : GameWindow
         
         GL.BindBuffer(BufferTarget.ElementArrayBuffer, _headElementBufferObject);
         GL.BufferSubData(BufferTarget.ElementArrayBuffer, IntPtr.Zero, _headIndices.Length * sizeof(uint), _headIndices);
+        
+        GL.BindBuffer(BufferTarget.ElementArrayBuffer, _appleElementBufferObject);
+        GL.BufferSubData(BufferTarget.ElementArrayBuffer, IntPtr.Zero, _appleIndices.Length * sizeof(uint), _appleIndices);
 
         GL.BindBuffer(BufferTarget.ElementArrayBuffer, _lineElementBufferObject);
         GL.BufferSubData(BufferTarget.ElementArrayBuffer, IntPtr.Zero, _lineIndices.Length*sizeof(uint), _lineIndices);

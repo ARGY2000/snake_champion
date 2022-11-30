@@ -2,8 +2,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Snake_Champion", "Snake_Champion\Snake_Champion.fsproj", "{9717F898-2059-43C9-A5DD-B0D3CF8F3703}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snake", "Snake\Snake.csproj", "{F02C16F6-E1D8-453B-ABD2-35A676CDA10E}"
-EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Champion", "Champion\Champion.fsproj", "{82C32FE7-1006-462B-AD1F-C9DD3EBE0633}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Essentials", "Essentials\Essentials.csproj", "{F0F78C07-6DC9-491E-9645-9D1E3265464A}"
@@ -11,8 +9,6 @@ EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "SnakeF", "SnakeF\SnakeF.fsproj", "{01011498-EB78-4EB1-ACC6-4A88FFB815C3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Displayinator", "Displayinator\Displayinator.csproj", "{C439AB7E-2CB8-433F-8BB8-75418163A98A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DisplayObjects", "DisplayObjects\DisplayObjects.csproj", "{76068969-0482-407F-9E22-1ADC5D381CAF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,10 +20,6 @@ Global
 		{9717F898-2059-43C9-A5DD-B0D3CF8F3703}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9717F898-2059-43C9-A5DD-B0D3CF8F3703}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9717F898-2059-43C9-A5DD-B0D3CF8F3703}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F02C16F6-E1D8-453B-ABD2-35A676CDA10E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F02C16F6-E1D8-453B-ABD2-35A676CDA10E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F02C16F6-E1D8-453B-ABD2-35A676CDA10E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F02C16F6-E1D8-453B-ABD2-35A676CDA10E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{82C32FE7-1006-462B-AD1F-C9DD3EBE0633}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{82C32FE7-1006-462B-AD1F-C9DD3EBE0633}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{82C32FE7-1006-462B-AD1F-C9DD3EBE0633}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -44,9 +36,5 @@ Global
 		{C439AB7E-2CB8-433F-8BB8-75418163A98A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C439AB7E-2CB8-433F-8BB8-75418163A98A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C439AB7E-2CB8-433F-8BB8-75418163A98A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{76068969-0482-407F-9E22-1ADC5D381CAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{76068969-0482-407F-9E22-1ADC5D381CAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{76068969-0482-407F-9E22-1ADC5D381CAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{76068969-0482-407F-9E22-1ADC5D381CAF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

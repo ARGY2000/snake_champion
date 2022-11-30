@@ -14,7 +14,7 @@ type SnakeController (width: int, height: int, ?visible: bool, ?smart: bool) as 
     let _smart = smart
     let _field = new Field(width, height)
     let _board = new SnakeBoard((float)width, (float)height)
-    let _mind: SnakeMind = new SnakeMind()
+    let _mind: SnakeMind = new SnakeMind(width,height)
         
     let _display =
         if _visible then

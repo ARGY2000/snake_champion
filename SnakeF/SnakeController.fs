@@ -37,25 +37,35 @@ type SnakeController (width: int, height: int, visible: bool) as SC =
         if visible then
             _display.Run()
             
+    member _.ReStart() =
+        _field.LayBase()
+        _board.SetNewBoard <| _field.FieldArray()
+        let floors = _board.GetFloors()
+        _field.LayApple()
+        _field.PlaceSnake()
+        _board.SetNewBoard <| _field.FieldArray()
+    
     member public _.MoveSnake(key: Keys) =
         let updated =
             match key with
             | Keys.Up ->
-                _field.MoveHead(Direction.Up)
-                true
+                true, _field.MoveHead(Direction.Up)
             | Keys.Down ->
-                _field.MoveHead(Direction.Down)
-                true
+                true, _field.MoveHead(Direction.Down)
             | Keys.Left ->
-                _field.MoveHead(Direction.Left)
-                true
+                true, _field.MoveHead(Direction.Left)
             | Keys.Right ->
-                _field.MoveHead(Direction.Right)
-                true
-            | _ -> false
-        
-        if updated then
-            _board.SetNewBoard <| _field.FieldArray()
+                true, _field.MoveHead(Direction.Right)
+            | _ -> (false, false)
+            
+        let updateall() =
             _display.UpdateHeadIndices(_board.GetHead())
             _display.UpdateSnakeIndices(_board.GetSnake())
             _display.UpdateAppleIndices(_board.GetApple())
+        
+        if snd(updated) then
+            SC.ReStart()
+            updateall()
+        elif fst(updated) then
+            _board.SetNewBoard <| _field.FieldArray()
+            updateall()

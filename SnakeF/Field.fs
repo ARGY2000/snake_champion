@@ -21,7 +21,7 @@ type Field (x: int, y: int) as fie =
         else
             MapBlocks.Open
             
-    member private _.LayBase() =
+    member public _.LayBase() =
         _field <- Array2D.init<MapBlocks> _width _height (fie.BaseLaying)
         
     member public _.LayApple() =
@@ -45,6 +45,7 @@ type Field (x: int, y: int) as fie =
         _field[x,y] <- MapBlocks.Head
         
     member public _.MoveHead(direct: Direction) =
+        let mutable crash = false
         let mutable placing = false
         let mutable row = 0
         let mutable col = 0
@@ -72,12 +73,16 @@ type Field (x: int, y: int) as fie =
                             _field[destcol, destrow] <- MapBlocks.Head
                             _field[col,row] <- MapBlocks.Open
                             fie.MoveBody destcol destrow col row
+                    else
+                        crash <- true
                     break <- true
                 col <- col+1
             row <- row+1
             
         if placing then
             fie.LayApple()
+        
+        crash
             
     member private _.MoveBody (col: int) (row: int) (ncol: int) (nrow: int) =
         let mutable Spots: seq<int * int> = Seq.empty

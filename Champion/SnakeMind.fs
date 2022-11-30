@@ -7,7 +7,8 @@ open Keras.Models
 open Keras.Optimizers
 open Numpy
 
-type SnakeMind(load: bool) as SM =
+type SnakeMind(x:int, y:int, ?load: bool) as SM =
+    let load = defaultArg load false
     let _model =
         if load then
             let loaded = Sequential.ModelFromJson(System.IO.File.ReadAllText("model.json"))
@@ -15,7 +16,7 @@ type SnakeMind(load: bool) as SM =
             loaded
         else
             let mutable model = new Sequential()
-            model.Add(new Dense(32, activation = "relu", input_shape = new Shape(2)))
+            model.Add(new Dense(32, activation = "relu", input_shape = new Shape(x*y)))
             model.Add(new Dense(64, activation = "relu"))
             model.Add(new Dense(1, activation = "sigmoid"))
             let adam = new Adam(lr = 0.002f)

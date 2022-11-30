@@ -13,6 +13,11 @@ type Field (x: int, y: int) as fie =
     do
         fie.LayBase()
         
+    let _sendDestination = new Event<MapBlocks>()
+    
+    [<CLIEvent>]
+    member public _.SendDestination = _sendDestination.Publish
+        
     member public _.GetField() = _field
     
     member private _.BaseLaying row col =
@@ -64,6 +69,7 @@ type Field (x: int, y: int) as fie =
                         | Direction.Left -> col-1
                         | Direction.Right -> col+1
                         | _ -> col
+                    _sendDestination.Trigger(_field[destcol, destrow])
                     if _field[destcol, destrow] <> MapBlocks.Wall && _field[destcol, destrow] <> MapBlocks.Body then
                         if _field[destcol, destrow] = MapBlocks.Apple then
                             _field[destcol, destrow] <- MapBlocks.Head

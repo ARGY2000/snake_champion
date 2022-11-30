@@ -16,7 +16,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Essentials\Essentials.csproj" />
-      <ProjectReference Include="..\Shared\Shared.fsproj" />
     </ItemGroup>
 
 </Project>
